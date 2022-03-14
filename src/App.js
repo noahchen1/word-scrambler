@@ -42,7 +42,7 @@ function App() {
 
   return (
     <div className='scrambled-word' style={{backgroundColor: '#e1e1e1', height: '100vh', width: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-      <div style={{display: 'flex', justifyContent: 'center', backgroundColor: 'white', height: '90%', width: '80%', maxWidth: '1000px', minWidth: '390px', borderRadius: '15px'}}>
+      <div style={{display: 'flex', alignItems: 'center', flexDirection:'column', backgroundColor: 'white', height: '90%', width: '80%', maxWidth: '1000px', minWidth: '390px', borderRadius: '15px'}}>
 
         <div style={{display:'flex', flexDirection: 'column', justifyContent:'space-around', width: '60%', minWidth: '300px', height: '40%'}}>
           <div style={{color: 'rgb(57, 135, 201)', fontWeight: '800', fontSize: '2.2rem', textAlign: 'center'}}>
@@ -53,7 +53,19 @@ function App() {
           <div style={{textAlign: 'center', fontWeight: '600', fontSize: '1.8rem'}}>Score: 0</div>
         </div>
 
+        <table style={{borderStyle: 'solid'}}>
+          <tr>
+            <td><input></input></td>
+            <td><input></input></td>
+            <td><input></input></td>
+          </tr>
 
+          <tr>
+          <td><input></input></td>
+          <td><input></input></td>
+          <td><input></input></td>
+          </tr>
+        </table>
 
       </div>
     </div>
