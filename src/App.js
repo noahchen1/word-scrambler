@@ -1,11 +1,13 @@
 import './App.css';
 import axios from 'axios'
 import { useEffect, useState } from 'react'
+import GuessSection from './GuessSection';
 
 function App() {
 
   const [firstSentence, setFirstSentence] = useState('')
   const [scrambledFirstSentence, setScrambledFirstSentence] = useState('')
+  const [scrambledFristSentenceArr, setScrambledFirstSentenceArr] = useState([])
   const [trigger, setTrigger] = useState(false)
 
   useEffect(() => {
@@ -35,7 +37,7 @@ function App() {
     }
 
     setScrambledFirstSentence(scrambledSentenceArr.join(' '))
-    console.log(scrambledFirstSentence)
+    setScrambledFirstSentenceArr(scrambledSentenceArr)
 
   }, [firstSentence])
 
@@ -53,19 +55,39 @@ function App() {
           <div style={{textAlign: 'center', fontWeight: '600', fontSize: '1.8rem'}}>Score: 0</div>
         </div>
 
-        <table style={{borderStyle: 'solid'}}>
-          <tr>
-            <td><input></input></td>
-            <td><input></input></td>
-            <td><input></input></td>
-          </tr>
+        <div style={{width: '80%', height: '50%'}}>
+          {scrambledFristSentenceArr.map((word, index) => {
+            let lettersArr = []
+            let inputWidth = ''
+            let lastWord = []
+            let lastWordInputWidth = ''
 
-          <tr>
-          <td><input></input></td>
-          <td><input></input></td>
-          <td><input></input></td>
-          </tr>
-        </table>
+            if(index < scrambledFristSentenceArr.length - 1) {
+              lettersArr = word.split('')
+              lettersArr.push(' ')
+              inputWidth = parseInt(1 / lettersArr.length *100) - 2 
+
+              return (
+                <GuessSection 
+                  lettersArr={lettersArr} 
+                  inputWidth={inputWidth}
+                />
+                )
+            } else {
+              lastWord = word.split('')
+              lastWordInputWidth = parseInt(1 / lastWord.length * 100) - 2
+              console.log(lastWord)
+
+              return (
+                <GuessSection 
+                  lettersArr={lastWord} 
+                  inputWidth={lastWordInputWidth}
+                />
+                )
+            }
+
+            })}
+        </div>
 
       </div>
     </div>
