@@ -24,6 +24,8 @@ function App() {
   useEffect(()=> {
     if (!trigger) return
     let scrambledSentenceArr = []
+
+
     const sentenceArr = firstSentence.split(' ')
     for (var i = 0; i < sentenceArr.length; i++) {
       const lettersArr =  sentenceArr[i].split('')
@@ -42,21 +44,11 @@ function App() {
     setScrambledFirstSentence(scrambledSentenceArr.join(' '))
     setScrambledFirstSentenceArr(scrambledSentenceArr)
 
-    /*
-    unscrambledSentenceArr = sentenceArr.map((word, index) => {
-      if(index < sentenceArr.length - 1) {
-        let eachWord = word.split('')
-        eachWord.push(' ')
-        eachWord.join('')
-      }
-    })
-    */
-
     setFirstSentenceArr(sentenceArr)
 
   }, [firstSentence])
 
- 
+
 
   return (
     <div className='scrambled-word' style={{backgroundColor: '#e1e1e1', height: '100vh', width: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
@@ -72,17 +64,18 @@ function App() {
         </div>
 
         <div style={{width: '80%', height: '50%'}}>
-          {scrambledFristSentenceArr.map((word, index) => {
+          {firstSentenceArr.map((word, index) => {
             let lettersArr = []
             let inputWidth = ''
             let lastWord = []
             let lastWordInputWidth = ''
 
-            if(index < scrambledFristSentenceArr.length - 1) {
+            
+
+            if(index < firstSentenceArr.length - 1) {
               lettersArr = word.split('')
               lettersArr.push(' ')
               inputWidth = parseInt(1 / lettersArr.length *100) - 2 
-
 
               return (
                 <GuessSection 
@@ -99,6 +92,7 @@ function App() {
 
               return (
                 <GuessSection 
+                  unscrambledSentenceArr={firstSentenceArr}
                   lettersArr={lastWord} 
                   inputWidth={lastWordInputWidth}
                   lastWordBG='#e1e1e1'
