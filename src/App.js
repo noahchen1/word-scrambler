@@ -6,9 +6,12 @@ import GuessSection from './GuessSection';
 function App() {
 
   const [firstSentence, setFirstSentence] = useState('')
+  const [firstSentenceArr, setFirstSentenceArr] = useState([])
   const [scrambledFirstSentence, setScrambledFirstSentence] = useState('')
   const [scrambledFristSentenceArr, setScrambledFirstSentenceArr] = useState([])
   const [trigger, setTrigger] = useState(false)
+
+
 
   useEffect(() => {
     axios.get('https://api.hatchways.io/assessment/sentences/1')
@@ -39,8 +42,21 @@ function App() {
     setScrambledFirstSentence(scrambledSentenceArr.join(' '))
     setScrambledFirstSentenceArr(scrambledSentenceArr)
 
+    /*
+    unscrambledSentenceArr = sentenceArr.map((word, index) => {
+      if(index < sentenceArr.length - 1) {
+        let eachWord = word.split('')
+        eachWord.push(' ')
+        eachWord.join('')
+      }
+    })
+    */
+
+    setFirstSentenceArr(sentenceArr)
+
   }, [firstSentence])
 
+ 
 
   return (
     <div className='scrambled-word' style={{backgroundColor: '#e1e1e1', height: '100vh', width: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
@@ -67,21 +83,26 @@ function App() {
               lettersArr.push(' ')
               inputWidth = parseInt(1 / lettersArr.length *100) - 2 
 
+
               return (
                 <GuessSection 
+                  unscrambledSentenceArr={firstSentenceArr}
                   lettersArr={lettersArr} 
                   inputWidth={inputWidth}
+                  lastWordBG='#ffb74d'
+                  backgroundColor='#e1e1e1'
                 />
                 )
             } else {
               lastWord = word.split('')
               lastWordInputWidth = parseInt(1 / lastWord.length * 100) - 2
-              console.log(lastWord)
 
               return (
                 <GuessSection 
                   lettersArr={lastWord} 
                   inputWidth={lastWordInputWidth}
+                  lastWordBG='#e1e1e1'
+                  backgroundColor='#e1e1e1'
                 />
                 )
             }
