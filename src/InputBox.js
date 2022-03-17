@@ -1,21 +1,15 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
-export default function InputBox({inputWidth, backgroundColor, letter}) {
+export default function InputBox({inputWidth, backgroundColor, letter, fieldNumber}) {
 
     const [currentInput, setCurrentInput] = useState('')
     const onChangeCurrentInput = e => {
         setCurrentInput(e.target.value)
+        console.log(e.target.name)  
     }
-
-
-
-    if (letter == currentInput) {
-        console.log('you are correct!')
-    }
-
 
     return (
-        <span style={{width: `${inputWidth}%`}}><input style={{width: '100%', backgroundColor: `${letter.toUpperCase() == currentInput.toUpperCase() ? "#4caf50" : backgroundColor }`}} type='text' value={currentInput} onChange={onChangeCurrentInput}></input></span>
+        <span style={{width: `${inputWidth}%`}}><input style={{width: '100%', backgroundColor: `${letter.toUpperCase() === currentInput.toUpperCase() ? "#4caf50" : backgroundColor }`}} type='text' value={currentInput} onChange={onChangeCurrentInput} name={`input-${fieldNumber}`} maxLength={1}></input></span>
     )
 }

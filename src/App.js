@@ -11,8 +11,6 @@ function App() {
   const [scrambledFristSentenceArr, setScrambledFirstSentenceArr] = useState([])
   const [trigger, setTrigger] = useState(false)
 
-
-
   useEffect(() => {
     axios.get('https://api.hatchways.io/assessment/sentences/1')
       .then(res => {
