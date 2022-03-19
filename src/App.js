@@ -1,32 +1,37 @@
 import './App.css';
 import axios from 'axios'
 import { useEffect, useState } from 'react'
-import GuessSection from './GuessSection';
+import InputBox from './InputBox';
 
-function App() {
+export default function App() {
 
-  const [firstSentence, setFirstSentence] = useState('')
-  const [firstSentenceArr, setFirstSentenceArr] = useState([])
-  const [scrambledFirstSentence, setScrambledFirstSentence] = useState('')
-  const [scrambledFristSentenceArr, setScrambledFirstSentenceArr] = useState([])
+  const [originalSentence, setOriginalSentence] = useState('')
+  const [originalSentenceArr, setOriginalSentenceArr] = useState([])
+  const [originalLettersArr, setOriginalLettersArr] = useState([])
+  const [scrambledSentence, setScrambledSentence] = useState('')
+  const [scrambledSentenceArr, setScrambledSentenceArr] = useState([])
+  const [scrambledLettersArr, setScrambledLettersArr] = useState([])
   const [trigger, setTrigger] = useState(false)
+
+  const [inputIndex, setInputIndex] = useState(0)
+
+  console.log(inputIndex)
+
 
   useEffect(() => {
     axios.get('https://api.hatchways.io/assessment/sentences/1')
       .then(res => {
-        setFirstSentence(res.data.data.sentence)
+        setOriginalSentence(res.data.data.sentence)
       })
-    setTrigger(true)
+      setTrigger(true)
   }, [])
 
-  useEffect(()=> {
+  useEffect(() => {
     if (!trigger) return
     let scrambledSentenceArr = []
-
-
-    const sentenceArr = firstSentence.split(' ')
-    for (var i = 0; i < sentenceArr.length; i++) {
-      const lettersArr =  sentenceArr[i].split('')
+    const originalSentenceArr = originalSentence.split(' ')
+    for (var i = 0; i < originalSentenceArr.length; i++) {
+      const lettersArr = originalSentenceArr[i].split('')
       if (lettersArr.length <= 2) {
         scrambledSentenceArr.splice(i, 0, lettersArr[i])
       } else if (lettersArr.length > 2) {
@@ -35,17 +40,18 @@ function App() {
         scrambledMiddleLetters.push(lettersArr[lettersArr.length - 1])
         const scrambledWord = scrambledMiddleLetters.join('')
         scrambledSentenceArr.splice(i, 0, scrambledWord)
-
-      } 
+      }
     }
 
-    setScrambledFirstSentence(scrambledSentenceArr.join(' '))
-    setScrambledFirstSentenceArr(scrambledSentenceArr)
+    setOriginalSentenceArr(originalSentenceArr)
+    setScrambledSentence(scrambledSentenceArr.join(' '))
+    setScrambledSentenceArr(scrambledSentenceArr)
+    setScrambledLettersArr(scrambledSentenceArr.join(' ').split(''))
 
-    setFirstSentenceArr(sentenceArr)
+    setOriginalLettersArr(originalSentenceArr.join(' ').split(''))
 
-  }, [firstSentence])
 
+  }, [originalSentence])
 
 
   return (
@@ -54,57 +60,78 @@ function App() {
 
         <div style={{display:'flex', flexDirection: 'column', justifyContent:'space-around', width: '60%', minWidth: '300px', height: '40%'}}>
           <div style={{color: 'rgb(57, 135, 201)', fontWeight: '800', fontSize: '2.2rem', textAlign: 'center'}}>
-            {scrambledFirstSentence}
+            {scrambledSentence}
           </div>
           <div style={{textAlign: 'center', fontWeight: '800', fontSize:'1.2rem', color: 'rgba(0, 0, 0, 0.7)'}}>Guess the sentence! Starting typing</div>
           <div style={{textAlign: 'center', fontWeight: '800', fontSize:'1.2rem', color: 'rgba(0, 0, 0, 0.7)'}}>The yellow blocks are meant for spaces</div>
           <div style={{textAlign: 'center', fontWeight: '600', fontSize: '1.8rem'}}>Score: 0</div>
         </div>
 
+
         <div style={{width: '80%', height: '50%'}}>
-          {firstSentenceArr.map((word, index) => {
-            let lettersArr = []
-            let inputWidth = ''
-            let lastWord = []
-            let lastWordInputWidth = ''
-
-            
-
-            if(index < firstSentenceArr.length - 1) {
-              lettersArr = word.split('')
+          {originalSentenceArr.map((word, index) => {
+            var lettersArr = word.split('')
+            if (index < originalSentenceArr.length - 1) {
               lettersArr.push(' ')
-              inputWidth = parseInt(1 / lettersArr.length *100) - 2 
-
+              var inputWidth = parseInt(1 / lettersArr.length * 100) - 2
               return (
-                <GuessSection 
-                  unscrambledSentenceArr={firstSentenceArr}
-                  lettersArr={lettersArr} 
-                  inputWidth={inputWidth}
-                  lastWordBG='#ffb74d'
-                  backgroundColor='#e1e1e1'
-                />
-                )
+                <div style={{margin: '5px 0', display: 'flex', justifyContent: 'space-between'}}>
+                  {lettersArr.map((letter, index) => {
+                    
+                    return(
+                      index < lettersArr.length - 1 ?
+                      <InputBox 
+                        letter={letter}
+                        inputWidth={inputWidth}
+                        backgroundColor='#e1e1e1'
+                        index={index}
+                        setInputIndex={setInputIndex}
+                        lettersArr={lettersArr}  
+                      />
+                      :
+                      <InputBox 
+                        letter={letter}
+                        inputWidth={inputWidth}
+                        backgroundColor='#ffb74d'
+                        index={index}
+                        setInputIndex={setInputIndex}
+                        lettersArr={lettersArr}
+                      />
+                    )
+                  })}
+                </div>
+              )
             } else {
-              lastWord = word.split('')
-              lastWordInputWidth = parseInt(1 / lastWord.length * 100) - 2
-
               return (
-                <GuessSection 
-                  unscrambledSentenceArr={firstSentenceArr}
-                  lettersArr={lastWord} 
-                  inputWidth={lastWordInputWidth}
-                  lastWordBG='#e1e1e1'
-                  backgroundColor='#e1e1e1'
-                />
-                )
-            }
+                <div style={{margin: '5px 0', display: 'flex', justifyContent: 'space-between'}}>
+                  {lettersArr.map((letter, index) => {
 
-            })}
+                    return (
+                      index < lettersArr.length - 1 ?
+                      <InputBox 
+                        letter={letter}
+                        inputWidth={inputWidth}
+                        backgroundColor='#e1e1e1'
+                        index={index}
+                        setInputIndex={setInputIndex}
+                        lettersArr={lettersArr}
+                      />
+                      :
+                      <InputBox 
+                        letter={letter}
+                        inputWidth={inputWidth}
+                        backgroundColor='#e1e1e1'
+                        index={index}
+                        setInputIndex={setInputIndex}
+                        lettersArr={lettersArr}
+                      />
+                    )
+                  })}
+                </div>
+                )}})}
         </div>
 
       </div>
     </div>
   )
 }
-
-export default App;
