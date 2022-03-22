@@ -1,13 +1,13 @@
 import React from 'react'
 import { useState } from 'react'
 
-export default function InputBox({inputWidth, backgroundColor, letter, inputNumber, setInputIndex, index}) {
+export default function InputBox({backgroundColor, letter, index, inputWidth, setCount, count}) {
 
     const [currentInput, setCurrentInput] = useState('')
 
     const onChangeCurrentInput = e => {
         setCurrentInput(e.target.value)
-        setInputIndex(index + 1)
+        setCount(index + 1)
     }
 
 
@@ -17,8 +17,8 @@ export default function InputBox({inputWidth, backgroundColor, letter, inputNumb
                     type='text' 
                     value={currentInput} 
                     onChange={onChangeCurrentInput} 
-                    name={`${inputNumber}`} 
                     maxLength={1}
+                    disabled={index + letter !== count + letter}
             >      
             </input>
         </span>

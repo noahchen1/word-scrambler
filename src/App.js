@@ -2,6 +2,7 @@ import './App.css';
 import axios from 'axios'
 import { useEffect, useState } from 'react'
 import InputBox from './InputBox';
+import GuessSection from './GuessSection';
 
 export default function App() {
 
@@ -13,10 +14,6 @@ export default function App() {
   const [scrambledLettersArr, setScrambledLettersArr] = useState([])
   const [trigger, setTrigger] = useState(false)
 
-  const [inputIndex, setInputIndex] = useState(0)
-
-  console.log(inputIndex)
-
 
   useEffect(() => {
     axios.get('https://api.hatchways.io/assessment/sentences/1')
@@ -25,6 +22,7 @@ export default function App() {
       })
       setTrigger(true)
   }, [])
+
 
   useEffect(() => {
     if (!trigger) return
@@ -50,8 +48,8 @@ export default function App() {
 
     setOriginalLettersArr(originalSentenceArr.join(' ').split(''))
 
-
   }, [originalSentence])
+
 
 
   return (
@@ -69,6 +67,7 @@ export default function App() {
 
 
         <div style={{width: '80%', height: '50%'}}>
+
           {originalSentenceArr.map((word, index) => {
             var lettersArr = word.split('')
             if (index < originalSentenceArr.length - 1) {
@@ -77,25 +76,22 @@ export default function App() {
               return (
                 <div style={{margin: '5px 0', display: 'flex', justifyContent: 'space-between'}}>
                   {lettersArr.map((letter, index) => {
-                    
                     return(
                       index < lettersArr.length - 1 ?
                       <InputBox 
                         letter={letter}
                         inputWidth={inputWidth}
                         backgroundColor='#e1e1e1'
+                        setCount={setCount}
                         index={index}
-                        setInputIndex={setInputIndex}
-                        lettersArr={lettersArr}  
                       />
                       :
                       <InputBox 
                         letter={letter}
                         inputWidth={inputWidth}
                         backgroundColor='#ffb74d'
+                        setCount={setCount}
                         index={index}
-                        setInputIndex={setInputIndex}
-                        lettersArr={lettersArr}
                       />
                     )
                   })}
@@ -105,25 +101,22 @@ export default function App() {
               return (
                 <div style={{margin: '5px 0', display: 'flex', justifyContent: 'space-between'}}>
                   {lettersArr.map((letter, index) => {
-
                     return (
                       index < lettersArr.length - 1 ?
                       <InputBox 
                         letter={letter}
                         inputWidth={inputWidth}
                         backgroundColor='#e1e1e1'
+                        setCount={setCount}
                         index={index}
-                        setInputIndex={setInputIndex}
-                        lettersArr={lettersArr}
                       />
                       :
                       <InputBox 
                         letter={letter}
                         inputWidth={inputWidth}
                         backgroundColor='#e1e1e1'
+                        setCount={setCount}
                         index={index}
-                        setInputIndex={setInputIndex}
-                        lettersArr={lettersArr}
                       />
                     )
                   })}
