@@ -5,15 +5,20 @@ import InputBox from './InputBox';
 
 
 
+
+
 export default function App() {
 
-  const [sentence, setSentence] = useState('')
+  const [sentence, setSentence] = useState(' ')
   const [sentenceArr, setSentenceArr] = useState([])
   const [scrambledSentence, setScrambledSentence] = useState('')
   const [trigger, setTrigger] = useState(false)
 
   const [count, setCount] = useState(0)
+  const [inputArr, setInputArr] = useState([])
 
+  const [nextBottom, setNextBottom] = useState('none')
+  
   // Making a request and store it in 'sentence' state,
   // Setting trigger to true to signify the compeltion of GET request
 
@@ -54,6 +59,16 @@ export default function App() {
 
   }, [sentence])
 
+  useEffect(() => {
+    const inputSentence = inputArr.join('').toLowerCase()
+    if (inputSentence == sentence.toLowerCase()) {
+      setNextBottom('block')
+    }
+
+  }, [inputArr])
+
+  let maxLength = sentence.split('').length - 1
+
 
   return (
     <div className='scrambled-word' style={{backgroundColor: '#e1e1e1', height: '100vh', width: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
@@ -89,6 +104,9 @@ export default function App() {
                       count={count}
                       setCount={setCount}
                       index={index}
+                      maxLength={maxLength}
+                      inputArr={inputArr}
+                      setInputArr={setInputArr}
                       backgroundColor='#e1e1e1'
                     />
                     :
@@ -100,6 +118,9 @@ export default function App() {
                       count={count}
                       setCount={setCount}
                       index={index}
+                      maxLength={maxLength}
+                      inputArr={inputArr}
+                      setInputArr={setInputArr}
                       backgroundColor='#ffb74d'
                     />
                   )
@@ -120,6 +141,9 @@ export default function App() {
                       count={count}
                       setCount={setCount}
                       index={index}
+                      maxLength={maxLength}
+                      inputArr={inputArr}
+                      setInputArr={setInputArr}
                       backgroundColor='#e1e1e1'
                     />
                     :
@@ -131,6 +155,9 @@ export default function App() {
                       count={count}
                       setCount={setCount}
                       index={index}
+                      maxLength={maxLength}
+                      inputArr={inputArr}
+                      setInputArr={setInputArr}
                       backgroundColor='#e1e1e1'
                     />
                   )
@@ -139,7 +166,13 @@ export default function App() {
             )}})}
       </div>
 
-      
+      <div style={{display: `${nextBottom}`}}>
+        <button
+          onClick={e =>{setNextBottom('none')}}
+        >
+          Next
+        </button>
+      </div>
  
     </div>
   </div>
