@@ -18,17 +18,20 @@ export default function InputBox({backgroundColor, letter, inputWidth, wordIndex
     // onKeyUp Handler
     const handleKeyPress = e => {
         // storing input entered into InputArr global state array
-        setInputArr(prevState => [...prevState, currentInput])
+        if(nextButton === 'none') {
+            setInputArr(prevState => [...prevState, currentInput])
+        }
 
         // upticking count global state after input entered
-        if(count < maxLength) {
+        if(count < maxLength && e.key !== 'Backspace') {
             setCount(currentIndex + 1)
         }
 
         // removing the last element from the InputArr global state array after removing the current input
         // downticking count global state after input removed 
         // emptying the current input
-        if (e.key === 'Backspace' && count < maxLength) {
+
+        if (e.key === 'Backspace' && count < maxLength && count > 0) {
             setInputArr(prevState => prevState.slice(0, -2))
             setCount(currentIndex - 1)
             setCurrentInput('')
@@ -41,12 +44,20 @@ export default function InputBox({backgroundColor, letter, inputWidth, wordIndex
             setCurrentInput('')
         }
 
+        // condition for the first input only 
+        if (e.key === 'Backspace' && count === 0) {
+            setInputArr([])
+            setCurrentInput('')
+        }
+
         // hitting enter to trigger the next button
         if (e.key === 'Enter' && nextButton === 'block') {
             const btn = document.getElementById('next-button')
             btn.click()
         }
     }
+
+
 
     // auto focus on the next input based on the global count #
     useEffect(()=> {
@@ -55,6 +66,7 @@ export default function InputBox({backgroundColor, letter, inputWidth, wordIndex
             nextInput.focus()
             nextInput.value = ''
         }
+
     }, [count])
 
 

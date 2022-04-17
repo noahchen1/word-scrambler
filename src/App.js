@@ -7,6 +7,8 @@ import InputBox from './InputBox';
 
 export default function App() {
 
+
+
   // state to store the last route of the API address, which gets upticked when the next button is clicked. 
   const [apiCounter, setAPICounter] = useState(1)
 
@@ -42,17 +44,17 @@ export default function App() {
   // state to control the visibility of the "you win" window
   const [youWin, setYouWin] = useState('none')
 
-
-
   // Making a request and store it in 'sentence' state,
   // Setting trigger to true to signify the compeltion of GET request
 
   useEffect(() => {
-    axios.get(`https://api.hatchways.io/assessment/sentences/${apiCounter}`)
+    if (apiCounter < 11) {
+      axios.get(`https://api.hatchways.io/assessment/sentences/${apiCounter}`)
       .then(res => {
         setSentence(res.data.data.sentence)
       })
       setTrigger(true)
+    }
 
       // condition to check if we have reached the last sentence from the API
       if (apiCounter === 11) {
@@ -115,8 +117,8 @@ export default function App() {
   return (
     <div className='scrambled-word' style={{backgroundColor: '#e1e1e1', height: '100vh', width: 'auto', display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
 
-      <div style={{display: `${youWin}`, position: 'absolute', height: '50%', width: '40%', maxWidth: '1000px', minWidth: '390px'}}>
-        <div style={{display:'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderRadius: '15px', height: '50px'}}>
+      <div style={{display: `${youWin}`, position: 'absolute', height: '40%', width: '40%', maxWidth: '1000px', minWidth: '390px'}}>
+        <div style={{display:'flex', justifyContent: 'center', alignItems: 'center', backgroundColor: 'white', borderRadius: '15px', height: '50px', fontSize: '1.2rem', fontWeight: '600'}}>
           You Win!
         </div>
       </div>
