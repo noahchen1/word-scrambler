@@ -272,6 +272,7 @@ export default function App() {
                   })}
                 </div>
               );
+              
             } else {
               // calculating the length of each input based on the length of the last word of the sentence
               var inputWidth = parseInt((1 / lettersArr.length) * 100) - 2;
